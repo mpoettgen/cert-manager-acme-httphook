@@ -1,5 +1,6 @@
 #! /bin/bash
 
+# Get current version number
 version=`dotnet gitversion -output json -showvariable NuGetVersion`
 versionPattern='([0-9]+)\.([0-9]+)\.([0-9]+)'
 

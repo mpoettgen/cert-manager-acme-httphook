@@ -3,6 +3,7 @@
 # Remove previous build image
 docker rmi cert-manager-acme-httphook:build
 
+# Ensure version information is up to date
 dotnet gitversion \
     -updateassemblyinfo src/AssemblyVersionInfo.cs \
     -ensureassemblyinfo \
