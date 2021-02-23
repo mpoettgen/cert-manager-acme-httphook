@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyProduct("Weather Station")]
+[assembly: AssemblyProduct("cert-manager-acme-httphook")]
 [assembly: AssemblyCompany("Michael Pöttgen")]
 [assembly: AssemblyCopyright("Copyright 2021 Michael Pöttgen")]
 [assembly: AssemblyTrademark("")]
