@@ -11,14 +11,15 @@ dotnet gitversion \
 
 # Build locally: docker buildx build -f src/cert-manager-acme-httphook/Dockerfile -t cert-manager-acme-httphook:build --platform arm64 src
 # Build in buildkitd remotely
-buildctl --addr tcp://build.home.poettgen.de:1234 \
-    --tlscacert /home/michael/weather/intermediate.pem \
-    --tlscert /home/michael/weather/wildcard.home.poettgen.de.pem \
-    --tlskey /home/michael/weather/privkey.pem build \
+buildctl --addr tcp://$MY_DOCKER_BUILD_HOST:$MY_DOCKER_BUILD_PORT \
+    --tlscert $MY_CLIENT_CERT \
+    --tlscacert $MY_CLIENT_CERT_CA \
+    --tlskey $MY_CLIENT_CERT_KEY \
+    build \
     --frontend dockerfile.v0 \
     --local context=src \
     --local dockerfile=src/cert-manager-acme-httphook \
     --output type=docker,name=cert-manager-acme-httphook:build \
     | docker load
 
-# Doesn't work: --output type=image,name=registry.home.poettgen.de/cert-manager-acme-httphook,registry.insecure=true,push=true
+# Doesn't work: --output type=image,name=$MY_DOCKER_REGISTRY/cert-manager-acme-httphook,push=true

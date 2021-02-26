@@ -13,14 +13,14 @@ if [[ $version =~ $versionPattern ]] ; then
     git push origin --tags
 
     # Apply tags
-    docker tag cert-manager-acme-httphook:build registry.home.poettgen.de/cert-manager-acme-httphook:latest
-    docker tag cert-manager-acme-httphook:build registry.home.poettgen.de/cert-manager-acme-httphook:$major.$minor.$patch
-    docker tag cert-manager-acme-httphook:build registry.home.poettgen.de/cert-manager-acme-httphook:$major.$minor
-    docker tag cert-manager-acme-httphook:build registry.home.poettgen.de/cert-manager-acme-httphook:$major
+    docker tag cert-manager-acme-httphook:build $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:latest
+    docker tag cert-manager-acme-httphook:build $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:$major.$minor.$patch
+    docker tag cert-manager-acme-httphook:build $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:$major.$minor
+    docker tag cert-manager-acme-httphook:build $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:$major
 
     # Push images
-    docker push registry.home.poettgen.de/cert-manager-acme-httphook:latest
-    docker push registry.home.poettgen.de/cert-manager-acme-httphook:$major.$minor.$patch
-    docker push registry.home.poettgen.de/cert-manager-acme-httphook:$major.$minor
-    docker push registry.home.poettgen.de/cert-manager-acme-httphook:$major
+    docker push $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:latest
+    docker push $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:$major.$minor.$patch
+    docker push $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:$major.$minor
+    docker push $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:$major
 fi
