@@ -20,10 +20,11 @@ namespace CertManager.Acme.HttpHook
                 .ConfigureAppConfiguration((hostConext, config) =>
                 {
                     string appPath = Directory.GetCurrentDirectory();
+                    // Put regular configuration into the `config` folder
                     config.SetBasePath(Path.Combine(appPath, "config"));
-                    // Provide for a means to configure secrets in a container.
+                    // Provide for a means to configure secrets in the `secrets` folder.
                     config.AddJsonFile(
-                        "appsettings.secrets.json",
+                        Path.Combine(appPath, "secrets", "appsettings.secrets.json"),
                         optional: true,
                         reloadOnChange: false
                         );
