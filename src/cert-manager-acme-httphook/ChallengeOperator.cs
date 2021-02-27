@@ -19,7 +19,7 @@ namespace CertManager.Acme.HttpHook
     {
         private readonly IKubernetes _client;
         private readonly ISftpClientFactory _sftpClientFactory;
-        private readonly ILogger<ChallengeOperator> _logger;
+        private readonly ILogger _logger;
         private string _resourceVersion;
         private CancellationTokenSource _doneWatching = null;
 
@@ -111,8 +111,8 @@ namespace CertManager.Acme.HttpHook
         protected virtual void OnEvent(WatchEventType type, Challenge item)
         {
             _resourceVersion = item.Metadata.ResourceVersion;
-            _logger.LogTrace("{type}: {name} (rev {revision}) - {state} - {reason}", type, item.Metadata.Name, item.Metadata.ResourceVersion, item.Status.State, item.Status.Reason);
-            if (item.Spec.Solver.HttpSolver != null)
+            _logger.LogTrace("{type}: {name} (rev {revision}) - {state} - {reason}", type, item.Metadata?.Name, item.Metadata?.ResourceVersion, item.Status?.State, item.Status?.Reason);
+            if (item.Spec?.Solver?.HttpSolver != null)
             {
                 switch (type)
                 {
@@ -129,13 +129,13 @@ namespace CertManager.Acme.HttpHook
         private void HttpChallengeAdded(Challenge item)
         {
             _logger.LogInformation("Added {item}", item.ToString());
-            CreateChallengeFile(item.Spec.Token, item.Spec.Key);
+            CreateChallengeFile(item.Spec?.Token, item.Spec?.Key);
         }
 
         private void HttpChallengeDeleted(Challenge item)
         {
             _logger.LogInformation("Deleted {item}", item.ToString());
-            RemoveChallengeFile(item.Spec.Token);
+            RemoveChallengeFile(item.Spec?.Token);
         }
 
         protected virtual void OnError(Exception exception)
@@ -154,6 +154,10 @@ namespace CertManager.Acme.HttpHook
 
         public void CreateChallengeFile(string filename, string contents)
         {
+            if (string.IsNullOrEmpty(filename))
+                throw new ArgumentException("Must not be null or empty!", nameof(filename));
+            if (string.IsNullOrEmpty(contents))
+                throw new ArgumentException("Must not be null or empty!", nameof(contents));
             using (SftpClient client = _sftpClientFactory.CreateClient())
             {
                 if (!client.Exists(".well-known/acme-challenge"))
@@ -169,6 +173,8 @@ namespace CertManager.Acme.HttpHook
 
         public void RemoveChallengeFile(string filename)
         {
+            if (string.IsNullOrEmpty(filename))
+                throw new ArgumentException("Must not be null or empty!", nameof(filename));
             using (SftpClient client = _sftpClientFactory.CreateClient())
             {
                 if (client.Exists(".well-known/acme-challenge"))
