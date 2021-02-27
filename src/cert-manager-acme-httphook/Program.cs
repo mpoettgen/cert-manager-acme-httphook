@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using k8s;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,9 +10,10 @@ namespace CertManager.Acme.HttpHook
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            await CreateHostBuilder(args)
+                .RunConsoleAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -52,7 +54,6 @@ namespace CertManager.Acme.HttpHook
                         .Bind(hostContext.Configuration.GetSection("SftpClient"))
                         .ValidateDataAnnotations();
                     services.AddSingleton<ISftpClientFactory, SftpClientFactory>();
-                })
-                .UseConsoleLifetime();
+                });
     }
 }

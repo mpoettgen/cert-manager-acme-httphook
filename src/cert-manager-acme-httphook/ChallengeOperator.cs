@@ -40,6 +40,7 @@ namespace CertManager.Acme.HttpHook
                 _latestResourceVersion = null;
 
                 await Task.Delay(TimeSpan.FromSeconds(3), stoppingToken);
+                _logger.LogInformation("Challenge operator starting at {time}", DateTimeOffset.Now);
 
                 while (!stoppingToken.IsCancellationRequested)
                 {
@@ -77,13 +78,16 @@ namespace CertManager.Acme.HttpHook
                         }
                         _logger.LogTrace("Done with the watcher");
 
-                        try
+                        if (!response.IsCompleted)
                         {
-                            response.Wait();    // wait for the response task to finish, so that we can clean it up
-                        }
-                        catch (Exception ex) when (IsTaskCanceled(ex))
-                        {
-                            _logger.LogTrace("Response terminated or stop has been requested.");
+                            try
+                            {
+                                await response;    // wait for the response task to finish, so that we can clean it up
+                            }
+                            catch (Exception ex) when (IsTaskCanceled(ex))
+                            {
+                                _logger.LogTrace("Response terminated or stop has been requested.");
+                            }
                         }
                         _logger.LogTrace("Done with the response");
                     }
