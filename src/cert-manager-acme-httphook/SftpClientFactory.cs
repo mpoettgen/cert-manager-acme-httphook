@@ -10,7 +10,7 @@ namespace CertManager.Acme.HttpHook
         private readonly SftpClientOptions _sftpClientOptions;
         private readonly ILogger _logger;
 
-        public SftpClientFactory(IOptions<SftpClientOptions> sftpClientOptions, ILogger<ChallengeOperator> logger)
+        public SftpClientFactory(IOptions<SftpClientOptions> sftpClientOptions, ILogger<SftpClientFactory> logger)
         {
             _sftpClientOptions = sftpClientOptions.Value ?? throw new ArgumentNullException(nameof(sftpClientOptions));
             _logger = logger;
@@ -23,7 +23,7 @@ namespace CertManager.Acme.HttpHook
                 _sftpClientOptions.Username,
                 _sftpClientOptions.Host,
                 _sftpClientOptions.Port,
-                _sftpClientOptions.Directory
+                _sftpClientOptions.Directory ?? ""
                 );
             ConnectionInfo connectionInfo = new ConnectionInfo(
                 _sftpClientOptions.Host,

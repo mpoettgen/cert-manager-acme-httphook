@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using k8s;
@@ -20,7 +16,7 @@ namespace CertManager.Acme.HttpHook
         private readonly IKubernetes _client;
         private readonly ISftpClientFactory _sftpClientFactory;
         private readonly ILogger _logger;
-        private string _resourceVersion;
+        private string _latestResourceVersion;
         private CancellationTokenSource _doneWatching = null;
 
         public ChallengeOperator(IKubernetes kubernetesClient, ISftpClientFactory sftpClientFactory, ILogger<ChallengeOperator> logger)
@@ -41,13 +37,13 @@ namespace CertManager.Acme.HttpHook
         {
             try
             {
-                _resourceVersion = null;
+                _latestResourceVersion = null;
 
                 await Task.Delay(TimeSpan.FromSeconds(3), stoppingToken);
 
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    _logger.LogTrace("Challenge operator starting at {time} with resourceVersion {resourceVersion}", DateTimeOffset.Now, _resourceVersion);
+                    _logger.LogTrace("Challenge operator starting at {time} with resourceVersion {resourceVersion}", DateTimeOffset.Now, _latestResourceVersion);
 
                     using (Task<HttpOperationResponse<object>> response = _client.ListClusterCustomObjectWithHttpMessagesAsync(
                         group: "acme.cert-manager.io",
@@ -56,7 +52,7 @@ namespace CertManager.Acme.HttpHook
                         timeoutSeconds: (int)TimeSpan.FromMinutes(5).TotalSeconds,
                         watch: true,
                         cancellationToken: stoppingToken,
-                        resourceVersion: _resourceVersion
+                        resourceVersion: _latestResourceVersion
                         ))
                     {
                         _logger.LogTrace("Start watching");
@@ -95,7 +91,11 @@ namespace CertManager.Acme.HttpHook
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex, "An unexpected exception has been thrown. Terminating background service!");
+                _logger.LogCritical(ex, "An unexpected exception has been thrown.");
+            }
+            finally
+            {
+                _logger.LogInformation("Background service is terminating.");
             }
         }
 
@@ -110,7 +110,7 @@ namespace CertManager.Acme.HttpHook
 
         protected virtual void OnEvent(WatchEventType type, Challenge item)
         {
-            _resourceVersion = item.Metadata.ResourceVersion;
+            _latestResourceVersion = item.Metadata.ResourceVersion;
             _logger.LogTrace("{type}: {name} (rev {revision}) - {state} - {reason}", type, item.Metadata?.Name, item.Metadata?.ResourceVersion, item.Status?.State, item.Status?.Reason);
             if (item.Spec?.Solver?.HttpSolver != null)
             {
@@ -169,6 +169,7 @@ namespace CertManager.Acme.HttpHook
                 client.ChangeDirectory(".well-known/acme-challenge");
                 client.WriteAllText(string.Concat(client.WorkingDirectory, "/", filename), contents);
             }
+            _logger.LogInformation("Challenge presented.");
         }
 
         public void RemoveChallengeFile(string filename)
@@ -183,6 +184,7 @@ namespace CertManager.Acme.HttpHook
                     client.DeleteFile(string.Concat(client.WorkingDirectory, "/", filename));
                 }
             }
+            _logger.LogInformation("Challenge removed.");
         }
 
         private void SftpExceptionOccured(object sender, ExceptionEventArgs e)
