@@ -44,8 +44,8 @@ jobs:
     - name: Generate assembly info
       uses: gittools/actions/gitversion/execute@v0.9.9
       with:
-        updateAssemblyInfo: true
         updateAssemblyInfoFilename: src/AssemblyVersionInfo.cs
+        additionalArguments: '/ensureassemblyinfo'
 
     - name: Restore dependencies
       run: dotnet restore
