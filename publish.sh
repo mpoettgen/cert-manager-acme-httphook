@@ -13,10 +13,10 @@ if [[ $version =~ $versionPattern ]] ; then
     git push origin --tags
 
     # Apply tags
-    docker tag cert-manager-acme-httphook:build $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:latest
-    docker tag cert-manager-acme-httphook:build $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:$major.$minor.$patch
-    docker tag cert-manager-acme-httphook:build $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:$major.$minor
-    docker tag cert-manager-acme-httphook:build $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:$major
+    docker tag $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:build $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:latest
+    docker tag $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:build $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:$major.$minor.$patch
+    docker tag $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:build $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:$major.$minor
+    docker tag $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:build $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:$major
 
     # Push images
     docker push $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:latest

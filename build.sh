@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Remove previous build image
-docker rmi cert-manager-acme-httphook:build
+docker rmi $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:build
 
 # Ensure version information is up to date
 dotnet gitversion \
