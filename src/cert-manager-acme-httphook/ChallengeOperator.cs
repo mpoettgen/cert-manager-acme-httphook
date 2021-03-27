@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,9 +21,9 @@ namespace CertManager.Acme.HttpHook
 
         public ChallengeOperator(IKubernetes kubernetesClient, ISftpClientFactory sftpClientFactory, ILogger<ChallengeOperator> logger)
         {
-            _client             = kubernetesClient;
-            _sftpClientFactory  = sftpClientFactory;
-            _logger             = logger;
+            _client = kubernetesClient;
+            _sftpClientFactory = sftpClientFactory;
+            _logger = logger;
         }
 
         public override void Dispose()
