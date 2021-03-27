@@ -9,17 +9,8 @@ dotnet gitversion \
     -ensureassemblyinfo \
     -showvariable NuGetVersion
 
-# Build locally: docker buildx build -f src/cert-manager-acme-httphook/Dockerfile -t cert-manager-acme-httphook:build --platform arm64 src
-# Build in buildkitd remotely
-buildctl --addr tcp://$MY_DOCKER_BUILD_HOST:$MY_DOCKER_BUILD_PORT \
-    --tlscert $MY_CLIENT_CERT \
-    --tlscacert $MY_CLIENT_CERT_CA \
-    --tlskey $MY_CLIENT_CERT_KEY \
-    build \
-    --frontend dockerfile.v0 \
-    --local context=src \
-    --local dockerfile=src/cert-manager-acme-httphook \
-    --output type=docker,name=cert-manager-acme-httphook:build \
-    | docker load
-
-# Doesn't work: --output type=image,name=$MY_DOCKER_REGISTRY/cert-manager-acme-httphook,push=true
+docker buildx build \
+    --platform linux/arm64 \
+    --tag $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:build \
+    --load \
+    src
