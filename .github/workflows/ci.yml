@@ -11,6 +11,11 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        shell: bash
+        working-directory: src/cert-manager-acme-httphook
+
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
