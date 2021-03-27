@@ -41,12 +41,21 @@ jobs:
       uses: gittools/actions/gitversion/execute@v0.9.9
       id: gitversion
 
+    - name: Create AssemblyVersionInfo
+      run: |
+        echo '
+        using System.Reflection;
+
+        [assembly: AssemblyFileVersion("0.0.0.0")]
+        [assembly: AssemblyVersion("0.0.0.0")]
+        [assembly: AssemblyInformationalVersion("0.0.0.0")]
+        ' > ../AssemblyVersionInfo.cs
+
     - name: Generate assembly info
       uses: gittools/actions/gitversion/execute@v0.9.9
       with:
         updateAssemblyInfo: true
         updateAssemblyInfoFilename: src/AssemblyVersionInfo.cs
-        additionalArguments: '/ensureassemblyinfo'
 
     - name: Restore dependencies
       run: dotnet restore
