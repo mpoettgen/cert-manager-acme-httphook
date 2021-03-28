@@ -65,10 +65,7 @@ jobs:
         run: dotnet restore
       -
         name: Dotnet Format
-        uses: xt0rted/dotnet-format@v1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          only-changed-files: ${{ github.event_name == 'pull_request' }}
+        run: dotnet format --check
       -
         name: Build
         run: dotnet build -c Release --no-restore
