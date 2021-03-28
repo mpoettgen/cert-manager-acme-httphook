@@ -9,8 +9,8 @@ if [[ $version =~ $versionPattern ]] ; then
     minor=${BASH_REMATCH[2]}
     patch=${BASH_REMATCH[3]}
 
-    git tag $major.$minor.$patch
-    git push origin --tags
+    git tag -a "v${major}.${minor}.${patch}" -m "Version ${major}.${minor}.${patch}"
+    git push origin --follow-tags
 
     # Apply tags
     docker tag $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:build $MY_DOCKER_REGISTRY/cert-manager-acme-httphook:latest
