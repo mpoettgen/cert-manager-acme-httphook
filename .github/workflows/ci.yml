@@ -91,9 +91,9 @@ jobs:
         with:
           images: ${{ secrets.DOCKERHUB_USERNAME }}/cert-manager-acme-httphook
           tag-semver: |
-            {{major}}
-            {{major}}.{{minor}}
             {{version}}
+            {{major}}.{{minor}}
+            {{major}}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
