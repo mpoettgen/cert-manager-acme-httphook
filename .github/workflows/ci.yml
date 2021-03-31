@@ -101,9 +101,9 @@ jobs:
       -
         name: Docker meta
         id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v2.1.0
+        uses: crazy-max/ghaction-docker-meta@v2.1.1
         with:
-          images: ${{ secrets.DOCKERHUB_USERNAME }}/cert-manager-acme-httphook
+          images: mpoettgen/cert-manager-acme-httphook
           tags: |
             type=ref,event=branch
             type=ref,event=pr
