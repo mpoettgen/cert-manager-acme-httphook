@@ -38,7 +38,7 @@ jobs:
           dotnet-version: 5.0.x
       -
         name: Problem Matcher for dotnet-format
-        uses: xt0rted/dotnet-format-problem-matcher@v1
+        uses: xt0rted/dotnet-format-problem-matcher@v1.2.0
       -
         name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v0.9.9
