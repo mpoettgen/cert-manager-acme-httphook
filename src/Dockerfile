@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:5.0.202 AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:5.0.203 AS build
 WORKDIR /src
 COPY ["cert-manager-acme-httphook/cert-manager-acme-httphook.csproj", "cert-manager-acme-httphook/"]
 RUN dotnet restore "cert-manager-acme-httphook/cert-manager-acme-httphook.csproj"
