@@ -6,7 +6,7 @@ COPY . .
 WORKDIR "/src/cert-manager-acme-httphook"
 RUN dotnet publish "cert-manager-acme-httphook.csproj" --no-restore -c Release -o /app
 
-FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/aspnet:5.0.5 AS final
+FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/aspnet:5.0.6 AS final
 WORKDIR /app
 COPY --from=build /app .
 ENTRYPOINT ["dotnet", "cert-manager-acme-httphook.dll"]
