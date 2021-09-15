@@ -47,8 +47,7 @@ namespace CertManager.Acme.HttpHook
                                 httpClient
                                 );
                         })
-                        .ConfigurePrimaryHttpMessageHandler(config.CreateDefaultHttpClientHandler)
-                        .AddHttpMessageHandler(KubernetesClientConfiguration.CreateWatchHandler);
+                        .ConfigurePrimaryHttpMessageHandler(config.CreateDefaultHttpClientHandler);
                     services.AddHostedService<ChallengeOperator>();
                     services.AddOptions<SftpClientOptions>()
                         .Bind(hostContext.Configuration.GetSection("SftpClient"))
