@@ -41,7 +41,7 @@ jobs:
         uses: xt0rted/dotnet-format-problem-matcher@v1.2.0
       -
         name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.9.13
+        uses: gittools/actions/gitversion/setup@v0.9.14
         with:
           versionSpec: '5.x'
       -
@@ -59,7 +59,7 @@ jobs:
           ' > ../AssemblyVersionInfo.cs
       -
         name: Generate assembly info
-        uses: gittools/actions/gitversion/execute@v0.9.13
+        uses: gittools/actions/gitversion/execute@v0.9.14
         with:
           updateAssemblyInfo: true
           updateAssemblyInfoFilename: src/AssemblyVersionInfo.cs
@@ -124,7 +124,7 @@ jobs:
           dotnet-version: 5.0.x
       -
         name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.9.13
+        uses: gittools/actions/gitversion/setup@v0.9.14
         with:
           versionSpec: '5.x'
       -
@@ -147,7 +147,7 @@ jobs:
           ' > ../AssemblyVersionInfo.cs
       -
         name: Generate assembly info
-        uses: gittools/actions/gitversion/execute@v0.9.13
+        uses: gittools/actions/gitversion/execute@v0.9.14
         with:
           updateAssemblyInfo: true
           updateAssemblyInfoFilename: src/AssemblyVersionInfo.cs
